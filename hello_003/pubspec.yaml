@@ -1,6 +1,7 @@
-name: hello_002
+name: hello_003
 description: A new Flutter project.
-
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.0+1
@@ -11,6 +12,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
@@ -18,5 +20,10 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+
 flutter:
   uses-material-design: true
+  # flutter.assets : image, icon 등의 자원 설정
+  assets:
+    # - images/image_6.jpg
+    - images/
