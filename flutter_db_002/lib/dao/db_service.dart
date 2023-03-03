@@ -25,7 +25,6 @@ Future<Database> initDB() async {
 }
 
 final String create_todo_table_sql = ```
-
 ```;
 
 // DB open 되었을때 table 을 생성하는 함수
