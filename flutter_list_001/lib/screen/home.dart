@@ -52,11 +52,11 @@ class HomePage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          text,
-          style: TextStyle(color: fontColor),
-          fontSize: fontSize,
-        ),
+        Text(text,
+            style: TextStyle(
+              color: fontColor,
+              fontSize: fontSize,
+            )),
       ],
     );
   }
