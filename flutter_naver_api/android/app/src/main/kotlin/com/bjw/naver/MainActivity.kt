@@ -1,4 +1,4 @@
-package com.example.flutter_naver_api
+package com.bjw.naver
 
 import io.flutter.embedding.android.FlutterActivity
 
