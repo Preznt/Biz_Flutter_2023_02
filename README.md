@@ -16,3 +16,9 @@ Restart Android Studio or Visual Studio
 
 `flutter pub get` 해주기
 Error Lens 확장 프로그램 설치
+
+### 3/7
+
+- package 이름 변경
+  `flutter pub add change_app_package_name`
+  `flutter pub run change_app_package_name:main com.bjw.firebase`
