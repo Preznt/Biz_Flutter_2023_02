@@ -1,0 +1,6 @@
+./keytool -genkey -v -alias androiddebugkey -keystore ~/.android/debug.keystore
+
+./keytool -list -v -alias androiddebugkey -keystore ~/.android/debug.keystore
+
+SHA1: C9:B4:84:11:D8:2B:C8:70:CC:C6:AB:D6:9F:33:F0:1E:00:26:7C:3C
+SHA256:8A:00:C7:DF:96:B9:64:DB:96:39:1F:98:DF:08:A1:69:82:A5:09:06:B6:D1:AF:02:23:73:47:D2:DD:8D:EC:9A
