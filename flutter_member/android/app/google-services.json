@@ -44,14 +44,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "1062413411531-ghf3glf19tilnnt0kp4ho5je0bj4jv0k.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.bjw.member",
-            "certificate_hash": "c9b48411d82bc870ccc6abd69f33f01e00267c3c"
-          }
-        },
-        {
           "client_id": "1062413411531-ra3j2fk5hl44tiapmsgrotmam26e054n.apps.googleusercontent.com",
           "client_type": 3
         }
