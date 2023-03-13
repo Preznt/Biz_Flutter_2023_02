@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pomodoros_001/count.dart';
+import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
 void main() {
   runApp(const App());
@@ -13,7 +15,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "pomodoros",
-      theme: ThemeData(primarySwatch: Colors.amber),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const HomePage(),
     );
   }
@@ -27,11 +29,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _time = 60;
+  final DateTime _dateTime = DateTime(0, 0, 0, 0, 0);
+  late int _second;
+  late int _finalSecond =
+      _dateTime.hour * 3600 + _dateTime.minute * 60 + _dateTime.second;
   int _counter = 0;
   bool _timerRun = false;
   late Timer _timer;
 
+  // 시작버튼 클릭시 1초씩 카운트 다운 시작하는 메소드
   void _onPressed() {
     setState(() {
       _timerRun = !_timerRun;
@@ -39,12 +45,12 @@ class _HomePageState extends State<HomePage> {
     if (_timerRun) {
       _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
         setState(() {
-          _time--;
+          _finalSecond--;
         });
 
-        if (_time < 1) {
+        if (_finalSecond < 1) {
           _counter++;
-          _time = 60;
+          _finalSecond = _second;
           _timerRun = !_timerRun;
           _timer.cancel();
         }
@@ -52,6 +58,59 @@ class _HomePageState extends State<HomePage> {
     } else {
       _timer.cancel();
     }
+  }
+
+  // TimePickerSpinner 라이브러리
+  Widget hourMinute24H() {
+    return TimePickerSpinner(
+      time: DateTime.utc(0, 0, 0, 0, 0, 0),
+      is24HourMode: true,
+      isShowSeconds: true,
+      onTimeChange: (time) {
+        setState(() {
+          _second = time.hour * 3600 + time.minute * 60 + time.second;
+        });
+      },
+    );
+  }
+
+  // TimePickerSpinner를 보여줄 모달창 생성
+  Future<void> timeSetting(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('시간설정'),
+          content: hourMinute24H(),
+          actions: <Widget>[
+            modalBtn(context, "취소", () {}),
+            modalBtn(context, "확인", () {
+              setState(() {
+                _finalSecond = _second;
+              });
+            }),
+          ],
+        );
+      },
+    );
+  }
+
+// 모달 버튼 메소드
+  TextButton modalBtn(
+    BuildContext context,
+    String title,
+    Function? setTime,
+  ) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        textStyle: Theme.of(context).textTheme.labelLarge,
+      ),
+      child: Text(title),
+      onPressed: () {
+        setTime!();
+        Navigator.of(context).pop();
+      },
+    );
   }
 
   @override
@@ -65,9 +124,7 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                Duration(seconds: _time, milliseconds: 0)
-                    .toString()
-                    .substring(2, 7),
+                Duration(seconds: _finalSecond).toString().substring(0, 7),
                 style: const TextStyle(
                   fontSize: 80,
                   fontWeight: FontWeight.bold,
@@ -75,25 +132,22 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                IconButton(
-                  iconSize: 130,
-                  onPressed: _onPressed,
-                  color: Colors.white,
-                  icon: _timerRun
+                btnIcon(
+                  _onPressed,
+                  _timerRun
                       ? const Icon(Icons.pause_circle_outline)
                       : const Icon(Icons.play_circle_outline),
                 ),
-                IconButton(
-                    iconSize: 110,
-                    onPressed: () {
-                      setState(() {
-                        _timer.cancel();
-                        _timerRun = false;
-                        _time = 60;
-                      });
-                    },
-                    color: Colors.white,
-                    icon: const Icon(Icons.replay_outlined)),
+                btnIcon(() {
+                  setState(() {
+                    _timer.cancel();
+                    _timerRun = false;
+                    _finalSecond = _second;
+                  });
+                }, const Icon(Icons.replay_outlined)),
+                btnIcon(() {
+                  timeSetting(context);
+                }, const Icon(Icons.timer))
               ]),
               PomodorsCount(counter: _counter),
             ],
@@ -102,36 +156,13 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 
-class PomodorsCount extends StatelessWidget {
-  const PomodorsCount({
-    super.key,
-    required int counter,
-  }) : _counter = counter;
-
-  final int _counter;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(35),
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
-          color: Colors.white),
-      child: Column(
-        children: [
-          const Text(
-            "pomodors",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-          ),
-          Text(
-            "$_counter",
-            style: const TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
+  IconButton btnIcon(void Function() btnActive, Icon icon) {
+    return IconButton(
+      iconSize: 100,
+      onPressed: btnActive,
+      color: Colors.white,
+      icon: icon,
     );
   }
 }
