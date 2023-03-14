@@ -8,8 +8,15 @@ class MainPage extends StatefulWidget {
    * main.dart 에서 전달된 counter state 변수는
    * widget 클래스에 담아서 state 로 전달한다
    */
-  const MainPage({super.key, required this.counter});
+  const MainPage({
+    super.key,
+    required this.counter,
+    required this.onPressed,
+    required this.timeRun,
+  });
   final int counter;
+  final Function() onPressed;
+  final bool timeRun;
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -39,33 +46,60 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Text(
-          _formatTime(widget.counter),
-          style: TextStyle(
-              fontSize: 80,
-              fontWeight: FontWeight.w900,
-              /**
-             * var Paint paint = Paint()
-             * paint.style(...)
-             * paint.strokeWidth(3)
-             * paint.color(Colors.amber)
-             */
-              foreground: Paint()
-                ..style = PaintingStyle.stroke
-                ..strokeWidth = 3
-                ..color = Colors.white),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              children: [
+                Text(
+                  _formatTime(widget.counter),
+                  style: TextStyle(
+                      fontSize: 80,
+                      fontWeight: FontWeight.w900,
+                      /**
+                   * var Paint paint = Paint()
+                   * paint.style(...)
+                   * paint.strokeWidth(3)
+                   * paint.color(Colors.amber)
+                   */
+                      foreground: Paint()
+                        ..style = PaintingStyle.stroke
+                        ..strokeWidth = 3
+                        ..color = Colors.white),
+                ),
+                Text(
+                  _formatTime(widget.counter),
+                  style: const TextStyle(
+                    fontSize: 80,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.amber,
+                  ),
+                )
+              ],
+            )
+          ],
         ),
-        Text(
-          _formatTime(widget.counter),
-          style: const TextStyle(
-            fontSize: 80,
-            fontWeight: FontWeight.w900,
-            color: Colors.amber,
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButton: SizedBox(
+        width: 100,
+        height: 100,
+        child: FloatingActionButton(
+          backgroundColor: Colors.white38,
+          elevation: 3,
+          onPressed: widget.onPressed,
+          tooltip: 'Increment',
+          child: Icon(
+            widget.timeRun ? Icons.pause : Icons.play_arrow,
+            size: 50,
+            color: Colors.black,
           ),
-        )
-      ],
+        ),
+      ),
     );
   }
 }
