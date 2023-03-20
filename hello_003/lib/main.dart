@@ -14,6 +14,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 여기에서 선언된 변수는 return 문
     return MaterialApp(
       theme: ThemeData.light(useMaterial3: true),
       home: DefaultTabController(
